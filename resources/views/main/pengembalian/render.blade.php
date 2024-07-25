@@ -8,9 +8,9 @@
             <form id="formValidasi">
                 <div class="modal-body">
                     <div class="form-group mb-0 mb-15 with-validation tanggal" id="tanggal-group">
-                        <label class="control-label mb-10 " for="tanggal">Tanggal Peminjaman</label>
+                        <label class="control-label mb-10 " for="tanggal">Tanggal Pengembalian</label>
                         <input type="date" id="tanggal" name="tanggal" class="form-control"
-                            placeholder="tanggal peminjaman">
+                            placeholder="tanggal pengembalian">
                         <div class="help-block with-errors error-message">
                             <ul class="list-unstyled">
                                 <li class="error-tanggal"></li>
@@ -18,9 +18,9 @@
                         </div>
                     </div>
                     <div class="form-group mb-0 mb-15 with-validation keterangan" id="keterangan-group">
-                        <label class="control-label mb-10 " for="keterangan">Keterangan Peminjaman</label>
+                        <label class="control-label mb-10 " for="keterangan">Keterangan Pengembalian</label>
                         <textarea id="keterangan" name="keterangan" class="form-control"
-                            placeholder="keterangan sarana"></textarea>
+                            placeholder="keterangan"></textarea>
                         <div class="help-block with-errors error-message">
                             <ul class="list-unstyled">
                                 <li class="error-keterangan"></li>

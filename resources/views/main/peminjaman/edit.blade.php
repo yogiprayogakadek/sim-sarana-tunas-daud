@@ -37,7 +37,7 @@
                         <div class="form-group mb-0 mb-15 with-validation keterangan" id="keterangan-group">
                             <label class="control-label mb-10 " for="keterangan">Keterangan Peminjaman</label>
                             <textarea id="keterangan" name="keterangan" class="form-control"
-                                placeholder="keterangan sarana">{{$peminjaman->keterangan}}</textarea>
+                                placeholder="keterangan peminjaman sarana">{{$peminjaman->keterangan}}</textarea>
                             <div class="help-block with-errors error-message">
                                 <ul class="list-unstyled">
                                     <li class="error-keterangan"></li>
