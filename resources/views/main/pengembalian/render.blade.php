@@ -3,7 +3,7 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Detail Peminjaman</h5>
+                <h5 class="modal-title">Data Pengembalian</h5>
             </div>
             <form id="formValidasi">
                 <div class="modal-body">

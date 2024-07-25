@@ -11,13 +11,14 @@
         <div class="panel-wrapper collapse in">
             <div class="panel-body">
                 <div class="form-wrap">
-                    <form id="formAdd">
+                    <form id="formUpdate">
                         <div class="form-group mb-0 mb-15 with-validation nama" id="nama-group">
+                            <input type="hidden" name="id" id="id" class="form-control" value="{{$sarana->id}}">
                             <label class="control-label mb-10 " for="nama">Nama Sarana</label>
                             {{-- <label class="control-label mb-10 " for="nama">nama</label> <small>(biarkan
                                 kosong jika ingin membuat nama otomatis)</small> --}}
                             <input type="text" id="nama" name="nama" class="form-control"
-                                placeholder="nama sarana">
+                                placeholder="nama sarana" value="{{$sarana->nama}}">
                             <div class="help-block with-errors error-message">
                                 <ul class="list-unstyled">
                                     <li class="error-nama"></li>
@@ -28,7 +29,7 @@
                         <div class="form-group mb-0 mb-15 with-validation jumlah" id="jumlah-group">
                             <label class="control-label mb-10 " for="jumlah">Jumlah Sarana</label>
                             <input type="text" id="jumlah" name="jumlah" class="form-control"
-                                placeholder="jumlah sarana">
+                                placeholder="jumlah sarana" value="{{$sarana->jumlah}}">
                             <div class="help-block with-errors error-message">
                                 <ul class="list-unstyled">
                                     <li class="error-jumlah"></li>
@@ -41,7 +42,7 @@
                             <select name="kepemilikan" id="kepemilikan" class="form-control">
                                 <option value="">Pilih kepemilikan sarana</option>
                                 @foreach ($kategori as $item)
-                                    <option value="{{$item}}">{{$item}}</option>
+                                    <option value="{{$item}}" {{$sarana->kepemilikan == $item ? 'selected' : ''}}>{{$item}}</option>
                                 @endforeach
                             </select>
                             <div class="help-block with-errors error-message">
@@ -53,7 +54,7 @@
 
 
                         <div class="form-group mb-15 with-validation foto">
-                            <label class="control-label mb-10 text-left">Foto Sarana</label>
+                            <label class="control-label mb-10 text-left">Foto Sarana <span class="small text-muted">(kosongkan jika tidak ingin mengganti foto)</span></label>
                             <div class="fileinput fileinput-new input-group" data-provides="fileinput">
                                 <div class="form-control" data-trigger="fileinput"> <i
                                         class="glyphicon glyphicon-file fileinput-exists"></i> <span
@@ -75,7 +76,7 @@
                         </div>
 
                         <div class="form-group mb-0">
-                            <button class="btn btn-success btn-anim btn-save" type="button"><i
+                            <button class="btn btn-success btn-anim btn-update" type="button"><i
                                     class="icon-rocket"></i><span class="btn-text">Simpan</span></button>
                         </div>
                     </form>

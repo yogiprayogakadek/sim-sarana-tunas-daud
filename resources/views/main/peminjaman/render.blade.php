@@ -3,7 +3,7 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Detail Peminjaman</h5>
+                <h5 class="modal-title">Data Peminjaman</h5>
             </div>
             <div class="modal-body">
                 <table class="table table-responsive table-hover table-stripped" style="width: 100%" id="tableDetail">
