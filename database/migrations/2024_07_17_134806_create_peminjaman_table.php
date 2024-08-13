@@ -15,11 +15,12 @@ return new class extends Migration
             $table->string('id', 50)->primary();
             $table->date('tanggal');
             $table->text('keterangan');
-            $table->string('nama_peminjam', 100);
+            $table->string('user_id', 50);
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            // $table->string('nama_peminjam', 100);
             $table->json('sarana');
-            // $table->integer('jumlah');
-            // $table->string('sarana_id', 50);
-            // $table->foreign('sarana_id')->references('id')->on('sarana')->onDelete('cascade');
+            $table->string('foto', 100)->comment('bukti peminjaman');
+            $table->boolean('is_approve')->nullable();
             $table->timestamps();
         });
     }

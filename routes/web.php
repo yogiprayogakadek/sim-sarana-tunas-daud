@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::namespace('Main')->middleware('auth')->group(function() {
+Route::namespace('Main')->middleware(['auth', 'checkActiveUser'])->group(function() {
     Route::get('/', 'DashboardController@index');
     Route::controller('DashboardController')
         ->prefix('/dashboard')
@@ -21,6 +21,20 @@ Route::namespace('Main')->middleware('auth')->group(function() {
         ->group(function() {
             Route::get('/', 'index')->name('index');
     });
+
+    Route::controller('SiswaController')
+        ->prefix('/siswa')
+        ->name('siswa.')
+        ->group(function() {
+            Route::get('/', 'index')->name('index');
+            Route::get('/render', 'render')->name('render');
+            Route::get('/create', 'create')->name('create');
+            Route::get('/edit/{id}', 'edit')->name('edit');
+            Route::post('/store', 'store')->name('store');
+            Route::post('/update', 'update')->name('update');
+            Route::post('/delete', 'delete')->name('delete');
+            Route::post('/reset-password', 'resetPassword')->name('reset-password');
+        });
 
     Route::controller('SaranaController')
         ->prefix('/sarana')
@@ -47,6 +61,8 @@ Route::namespace('Main')->middleware('auth')->group(function() {
             Route::post('/store', 'store')->name('store');
             Route::post('/update', 'update')->name('update');
             Route::post('/delete', 'delete')->name('delete');
+            Route::post('/update-status', 'updateStatus')->name('update-status');
+            Route::post('/print', 'print')->name('print');
         });
 
     Route::controller('PengembalianController')
@@ -61,6 +77,7 @@ Route::namespace('Main')->middleware('auth')->group(function() {
             Route::post('/update', 'update')->name('update');
             Route::post('/delete', 'delete')->name('delete');
             Route::get('/detailPeminjaman/{id}', 'detailPeminjaman')->name('detailPeminjaman');
+            Route::post('/print', 'print')->name('print');
         });
 
         Route::controller('KerusakanController')
@@ -75,6 +92,7 @@ Route::namespace('Main')->middleware('auth')->group(function() {
             Route::post('/store', 'store')->name('store');
             Route::post('/update', 'update')->name('update');
             Route::post('/delete', 'delete')->name('delete');
+            Route::post('/print', 'print')->name('print');
         });
 
 });

@@ -88,4 +88,22 @@ class PengembalianController extends Controller
 
         return response()->json($data);
     }
+
+    public function print(Request $request)
+    {
+        $kategori = $request->kategori;
+        $startTime = $request->input('tanggal_awal');
+        $endTime = $request->input('tanggal_akhir');
+        if ( $kategori== 'Semua') {
+            $pengembalian = Pengembalian::all();
+        } else {
+            $pengembalian = Pengembalian::whereBetween('tanggal', [$startTime, $endTime])->get();
+        }
+
+        $view = [
+            'data' => view('main.pengembalian.print.render', compact('pengembalian', 'kategori', 'startTime', 'endTime'))->render(),
+        ];
+
+        return response()->json($view);
+    }
 }

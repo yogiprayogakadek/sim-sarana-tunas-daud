@@ -132,23 +132,23 @@ class SaranaController extends Controller
 
     public function delete(Request $request)
     {
-    try{
-        $sarana = Sarana::find($request->id);
+        try{
+            $sarana = Sarana::find($request->id);
 
-        $sarana->delete();
+            $sarana->delete();
 
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Data berhasil terhapus',
-            'title' => 'Berhasil'
-        ]);
-    } catch (\Exception $e) {
-        return response()->json([
-            'status' => 'error',
-            'message' => $e->getMessage(),
-            // 'message' => 'Terjadi kesalahan!',
-            'title' => 'Gagal'
-        ]);
-    }
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Data berhasil terhapus',
+                'title' => 'Berhasil'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage(),
+                // 'message' => 'Terjadi kesalahan!',
+                'title' => 'Gagal'
+            ]);
+        }
     }
 }

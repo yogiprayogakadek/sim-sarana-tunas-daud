@@ -11,6 +11,7 @@
 {{-- col-sm-offset-3 --}}
 @section('content')
     <div class="row">
+        @can('admin')
         @foreach (listData()['list'] as $key => $item)
         <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
             <div class="panel panel-default card-view pa-0">
@@ -34,6 +35,19 @@
             </div>
         </div>
         @endforeach
+        @endcan
+
+        @can('siswa')
+        <div class="col-6 col-offset-3 mt-5">
+            <div class="card">
+                <div class="card-body">
+                    <div class="text-center">
+                        <img src="{{ asset('assets/image/logo.png') }}" alt="User Image" width="100px">
+                    </div>
+                    <h3 class="text-center">Selamat datang, {{auth()->user()->nama}}</h3>
+                </div>
+            </div>
+        @endcan
     </div>
 @endsection
 

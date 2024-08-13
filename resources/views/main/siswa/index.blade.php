@@ -1,9 +1,9 @@
 @extends('template.master')
 
-@section('page-title', 'Peminjaman')
+@section('page-title', 'Siswa')
 @section('sub-title', 'List')
 @push('page-link')
-    <a href="{{ route('peminjaman.index') }}">Peminjaman</a>
+    <a href="{{ route('siswa.index') }}">Siswa</a>
 @endpush
 {{-- @push('css')
     <link rel="stylesheet" href="{{ asset('assets/css/dist/jasny-bootstrap.min.css') }}">
@@ -17,12 +17,8 @@
 
 @push('script')
     {{-- <script src="{{ asset('assets/js/dist/jasny-bootstrap.min.js') }}"></script> --}}
-    <script src="{{ asset('assets/function/peminjaman/script.js') }}"></script>
+    <script src="{{ asset('assets/function/siswa/script.js') }}"></script>
     <script>
-        function assets(url) {
-            var url = '{{ url("") }}/' + url;
-            return url;
-        }
         @if (session('status'))
             Swal.fire(
                 "{{ session('title') }}",

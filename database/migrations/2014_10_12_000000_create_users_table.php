@@ -16,6 +16,8 @@ return new class extends Migration
             $table->string('nama', 100);
             $table->string('username', 20);
             $table->string('password', 100);
+            $table->enum('role', ['Admin', 'Siswa'])->default('Siswa');
+            $table->boolean('is_active')->default(false);
             $table->timestamps();
         });
     }

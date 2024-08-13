@@ -24,8 +24,19 @@
                         </div>
                         <div class="form-group mb-0 mb-15 with-validation nama_peminjam" id="nama_peminjam-group">
                             <label class="control-label mb-10 " for="nama_peminjam">Nama Peminjam</label>
-                            <input type="text" id="nama_peminjam" name="nama_peminjam" class="form-control"
-                                placeholder="nama peminjam">
+                            @can('siswa')
+                            <input type="hidden" name="nama_peminjaman" id="nama_peminjaman" value="{{Auth::user()->id}}">
+                            <input type="text" id="siswa" name="siswa" class="form-control"
+                                placeholder="nama peminjam" value="{{Auth::user()->nama}}" readonly>
+                            @endcan
+
+                            @can('admin')
+                            <select name="nama_peminjaman" id="nama_peminjaman" class="form-control">
+                                @foreach($siswa as $s)
+                                <option value="{{$s->id}}">{{$s->nama}}</option>
+                                @endforeach
+                            </select>
+                            @endcan
                             <div class="help-block with-errors error-message">
                                 <ul class="list-unstyled">
                                     <li class="error-nama_peminjam"></li>
@@ -40,6 +51,28 @@
                             <div class="help-block with-errors error-message">
                                 <ul class="list-unstyled">
                                     <li class="error-keterangan"></li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="form-group mb-15 with-validation foto">
+                            <label class="control-label mb-10 text-left">Bukti Peminjaman</label>
+                            <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+                                <div class="form-control" data-trigger="fileinput"> <i
+                                        class="glyphicon glyphicon-file fileinput-exists"></i> <span
+                                        class="fileinput-filename"></span></div>
+                                <span class="input-group-addon fileupload btn btn-info btn-anim btn-file"><i
+                                        class="fa fa-upload"></i> <span class="fileinput-new btn-text">Select
+                                        file</span> <span class="fileinput-exists btn-text">Change</span>
+                                    <input type="file" name="foto">
+                                </span> <a href="#"
+                                    class="input-group-addon btn btn-danger btn-anim fileinput-exists"
+                                    data-dismiss="fileinput"><i class="fa fa-trash"></i><span class="btn-text">
+                                        Hapus</span></a>
+                            </div>
+                            <div class="help-block with-errors error-message">
+                                <ul class="list-unstyled">
+                                    <li class="error-foto"></li>
                                 </ul>
                             </div>
                         </div>

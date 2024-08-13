@@ -17,6 +17,8 @@ class UserSeeder extends Seeder
             'nama' => 'Admin',
             'username' => 'admin',
             'password' => bcrypt(12345678),
+            'role' => 'Admin',
+            'is_active' => true
         ];
 
         User::create($user);

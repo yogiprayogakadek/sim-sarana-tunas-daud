@@ -27,4 +27,8 @@ class Peminjaman extends Model
     {
          return $this->hasOne(Pengembalian::class, 'peminjaman_id', 'id');
     }
+    public function user()
+    {
+         return $this->belongsTo(User::class, 'user_id', 'id');
+    }
 }

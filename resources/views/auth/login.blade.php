@@ -24,6 +24,7 @@
 
     <link rel="stylesheet" type="text/css"
         href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.4/dist/sweetalert2.min.css">
     <!-- Favicon -->
     <link rel="icon" href="{{ asset('assets/image/logo.png') }}" sizes="any">
     <!-- Page Title -->
@@ -55,7 +56,7 @@
                     </p>
 
                     <!-- Form -->
-                    <form role="form" action="{{ route('login') }}" method="POST">
+                    <form role="form" action="{{ route('login') }}" method="POST" autocomplete="off">
                         @csrf
                         <div class="row">
                             <div class="col-lg-6">
@@ -113,6 +114,9 @@
                         <button type="submit" class="btn btn-primary mt-3">
                             Log in
                         </button>
+                        <a href="{{ route('register') }}">
+                            <button type="button" class="btn btn-success mt-3">Register</button>
+                        </a>
                     </form>
                 </div>
 
@@ -141,6 +145,7 @@
     <script src="https://dashly-theme.com/assets/js/theme.bundle.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.4/dist/sweetalert2.all.min.js"></script>
 
     <script>
         $(document).ready(function() {
@@ -157,6 +162,29 @@
                     "progressBar": true
                 }
                 toastr.error("{{ session('error') }}");
+            @endif
+
+            @if (Session::has('success'))
+                toastr.options = {
+                    "closeButton": true,
+                    "progressBar": true
+                }
+                toastr.success("{{ session('success') }}");
+            @endif
+
+            @if (session('status') == 'success')
+                Swal.fire(
+                    "{{ session('title') }}",
+                    "{{ session('message') }}",
+                    "{{ session('status') }}",
+                );
+            @endif
+            @if (session('status') == 'error')
+                Swal.fire(
+                    "{{ session('title') }}",
+                    "{{ session('message') }}",
+                    "{{ session('status') }}",
+                );
             @endif
         });
     </script>

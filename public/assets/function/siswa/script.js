@@ -1,7 +1,7 @@
 function getData() {
     $.ajax({
         type: "get",
-        url: "/sarana/render",
+        url: "/siswa/render",
         dataType: "json",
         success: function (response) {
             $(".render").html(response.data);
@@ -15,7 +15,7 @@ function getData() {
 function tambah() {
     $.ajax({
         type: "get",
-        url: "/sarana/create",
+        url: "/siswa/create",
         dataType: "json",
         success: function (response) {
             $(".render").html(response.data);
@@ -48,7 +48,7 @@ $(document).ready(function () {
         let data = new FormData(form);
         $.ajax({
             type: "POST",
-            url: "/sarana/store",
+            url: "/siswa/store",
             data: data,
             processData: false,
             contentType: false,
@@ -106,7 +106,7 @@ $(document).ready(function () {
         let id = $(this).data('id')
         $.ajax({
             type: "get",
-            url: "/sarana/edit/" + id,
+            url: "/siswa/edit/" + id,
             dataType: "json",
             success: function (response) {
                 $(".render").html(response.data);
@@ -128,7 +128,7 @@ $(document).ready(function () {
         let data = new FormData(form);
         $.ajax({
             type: "POST",
-            url: "/sarana/update",
+            url: "/siswa/update",
             data: data,
             processData: false,
             contentType: false,
@@ -205,7 +205,7 @@ $(document).ready(function () {
                     });
                     $.ajax({
                             type: "POST",
-                            url: "/sarana/delete",
+                            url: "/siswa/delete",
                             data: {
                                 id: id,
                             },
@@ -232,4 +232,52 @@ $(document).ready(function () {
         });
     });
 
+    // trigger button delete
+    $("body").on("click", ".btn-reset-password", function () {
+        let id = $(this).data('id');
+        Swal.fire({
+            icon: 'info',
+            // icon: 'error',
+            title: "Password dikembalikan ke default",
+            // text: 'hapus data',
+            showCancelButton: true,
+            confirmButtonText: "Reset",
+            showLoaderOnConfirm: true,
+            preConfirm: function () {
+                return new Promise(function (resolve) {
+                    $.ajaxSetup({
+                        headers: {
+                            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                                "content"
+                            ),
+                        },
+                    });
+                    $.ajax({
+                            type: "POST",
+                            url: "/siswa/reset-password",
+                            data: {
+                                id: id,
+                            },
+                        })
+                        .done(function (response) {
+                            getData();
+                            Swal.fire(
+                                response.title,
+                                response.message,
+                                response.status
+                            );
+                        })
+                        .fail(function (response) {
+                            // toastr[response.status](response.message, response.title);
+                            Swal.fire(
+                                response.title,
+                                response.message,
+                                response.status
+                            );
+                        });
+                });
+            },
+            allowOutsideClick: false,
+        });
+    });
 });

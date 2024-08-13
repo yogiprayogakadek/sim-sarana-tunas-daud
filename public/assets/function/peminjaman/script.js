@@ -126,11 +126,12 @@ $(document).ready(function () {
         let tanggal = $('input[name=tanggal]').val();
         let namaPeminjam = $('input[name=nama_peminjam]').val();
         let keterangan = $('#keterangan').val();
+        let foto = $('#foto').val();
 
         let form = $("#formAdd")[0];
         let data = new FormData(form);
         data.append('list_sarana', localStorage.getItem('listSarana'))
-        if(tanggal == '' || namaPeminjam == '' || keterangan == '' || localStorage.length == 0 || JSON.parse(localStorage.getItem('listSarana'))[0]['data'].length == 0) {
+        if(tanggal == '' || foto == '' || namaPeminjam == '' || keterangan == '' || localStorage.length == 0 || JSON.parse(localStorage.getItem('listSarana'))[0]['data'].length == 0) {
             Swal.fire('Warning', 'Mohon untuk melengkapi form', 'error');
         } else {
             $.ajax({
@@ -248,68 +249,73 @@ $(document).ready(function () {
         let tanggal = $('input[name=tanggal]').val();
         let namaPeminjam = $('input[name=nama_peminjam]').val();
         let keterangan = $('#keterangan').val();
+        let status = $(this).data('status');
 
         let form = $("#formUpdate")[0];
         let data = new FormData(form);
         data.append('list_sarana', localStorage.getItem('listSarana'))
-        if(tanggal == '' || namaPeminjam == '' || keterangan == '' || localStorage.length == 0 || JSON.parse(localStorage.getItem('listSarana'))[0]['data'].length == 0) {
-            Swal.fire('Warning', 'Mohon untuk melengkapi form', 'error');
-        } else {
-            $.ajax({
-                type: "POST",
-                url: "/peminjaman/update",
-                data: data,
-                processData: false,
-                contentType: false,
-                cache: false,
-                beforeSend: function() {
-                    $(".btn-update").html("Mohon tunggu...").prop('disabled', true);
-                },
-                done: function () {
-                    $(".btn-update").html("Simpan").prop('disabled', false);
-                },
-                success: function (response) {
-                    console.log(response)
-                    $(".with-validation").removeClass("has-error has-danger");
-                    Swal.fire(response.title, response.message, response.status);
-                    if (response.status == "success") {
-                        getData();
-                    }
-                },
-                error: function (error) {
-                    let formName = [];
-                    let errorName = [];
-
-                    $.each($("#formUpdate").serializeArray(), function (i, field) {
-                        formName.push(field.name.replace(/\[|\]/g, ""));
-                    });
-                    if (error.status == 422) {
-                        if (error.responseJSON.errors) {
-                            $.each(
-                                error.responseJSON.errors,
-                                function (key, value) {
-                                    errorName.push(key);
-                                    if ($("." + key).val() == "") {
-                                        $("." + key).addClass("has-error has-danger");
-                                        $(".error-" + key).html(value);
-                                    }
-                                }
-                            );
-
-                            $.each(formName, function (i, field) {
-                                if ($.inArray(field, errorName) == -1) {
-                                    $("." + field).removeClass("has-error has-danger");
-                                    console.log(field)
-                                    $(".error-" + field).html('');
-                                } else {
-                                    $("." + field).addClass("has-error has-danger");
-                                }
-                            });
+        if(status == null) {
+            if(tanggal == '' || namaPeminjam == '' || keterangan == '' || localStorage.length == 0 || JSON.parse(localStorage.getItem('listSarana'))[0]['data'].length == 0) {
+                Swal.fire('Warning', 'Mohon untuk melengkapi form', 'error');
+            } else {
+                $.ajax({
+                    type: "POST",
+                    url: "/peminjaman/update",
+                    data: data,
+                    processData: false,
+                    contentType: false,
+                    cache: false,
+                    beforeSend: function() {
+                        $(".btn-update").html("Mohon tunggu...").prop('disabled', true);
+                    },
+                    done: function () {
+                        $(".btn-update").html("Simpan").prop('disabled', false);
+                    },
+                    success: function (response) {
+                        console.log(response)
+                        $(".with-validation").removeClass("has-error has-danger");
+                        Swal.fire(response.title, response.message, response.status);
+                        if (response.status == "success") {
+                            getData();
                         }
-                    }
-                    $(".btn-update").html("Simpan").prop('disabled', false);
-                },
-            });
+                    },
+                    error: function (error) {
+                        let formName = [];
+                        let errorName = [];
+
+                        $.each($("#formUpdate").serializeArray(), function (i, field) {
+                            formName.push(field.name.replace(/\[|\]/g, ""));
+                        });
+                        if (error.status == 422) {
+                            if (error.responseJSON.errors) {
+                                $.each(
+                                    error.responseJSON.errors,
+                                    function (key, value) {
+                                        errorName.push(key);
+                                        if ($("." + key).val() == "") {
+                                            $("." + key).addClass("has-error has-danger");
+                                            $(".error-" + key).html(value);
+                                        }
+                                    }
+                                );
+
+                                $.each(formName, function (i, field) {
+                                    if ($.inArray(field, errorName) == -1) {
+                                        $("." + field).removeClass("has-error has-danger");
+                                        console.log(field)
+                                        $(".error-" + field).html('');
+                                    } else {
+                                        $("." + field).addClass("has-error has-danger");
+                                    }
+                                });
+                            }
+                        }
+                        $(".btn-update").html("Simpan").prop('disabled', false);
+                    },
+                });
+            }
+        } else {
+            Swal.fire('Warning', 'Sudah tidak dapat melakukan perubahan data!', 'error');
         }
     });
 
@@ -361,4 +367,49 @@ $(document).ready(function () {
             allowOutsideClick: false,
         });
     });
+
+    // trigger button update status
+    $("body").on("click", ".btn-update-status", function () {
+        let form = $("#modalStatus #formStatus")[0];
+        let data = new FormData(form);
+
+        Swal.fire({
+            icon: 'info',
+            title: "Ubah status peminjaman ini?",
+            showCancelButton: true,
+            confirmButtonText: "Update",
+            showLoaderOnConfirm: true,
+            preConfirm: function () {
+                return new Promise(function (resolve, reject) {
+                    $.ajaxSetup({
+                        headers: {
+                            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+                        },
+                    });
+
+                    $.ajax({
+                        type: "POST",
+                        url: "/peminjaman/update-status",
+                        data: data,
+                        processData: false, // Important for FormData
+                        contentType: false, // Important for FormData
+                    })
+                    .done(function (response) {
+                        $('#modalStatus').modal('hide');
+                        getData();
+                        Swal.fire(response.title, response.message, response.status);
+                        resolve(response); // Resolve the promise on success
+                    })
+                    .fail(function (response) {
+                        $('#modalStatus').modal('hide');
+                        Swal.fire("Error", "Something went wrong!", "error");
+                        reject(response); // Reject the promise on failure
+                    });
+                });
+            },
+            allowOutsideClick: false,
+        });
+    });
+
+
 });

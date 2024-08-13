@@ -155,4 +155,22 @@ class KerusakanController extends Controller
 
         return response()->json($sarana);
     }
+
+    public function print(Request $request)
+    {
+        $kategori = $request->kategori;
+        $startTime = $request->input('tanggal_awal');
+        $endTime = $request->input('tanggal_akhir');
+        if ( $kategori== 'Semua') {
+            $kerusakan = Kerusakan::all();
+        } else {
+            $kerusakan = Kerusakan::whereBetween('tanggal', [$startTime, $endTime])->get();
+        }
+
+        $view = [
+            'data' => view('main.kerusakan.print.render', compact('kerusakan', 'kategori', 'startTime', 'endTime'))->render(),
+        ];
+
+        return response()->json($view);
+    }
 }
