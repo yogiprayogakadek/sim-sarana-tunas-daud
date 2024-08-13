@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
@@ -41,5 +42,15 @@ class LoginController extends Controller
     public function username()
     {
         return 'username';
+    }
+
+    protected function validateLogin(Request $request)
+    {
+        $this->validate($request, [
+            $this->username() => 'exists:users,' . $this->username() . ',is_active,1',
+            'password' => 'required',
+        ], [
+            $this->username() . '.exists' => 'Username yang anda gunakan tidak ada atau status tidak aktif.'
+        ]);
     }
 }

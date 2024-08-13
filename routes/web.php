@@ -34,6 +34,7 @@ Route::namespace('Main')->middleware(['auth', 'checkActiveUser'])->group(functio
             Route::post('/update', 'update')->name('update');
             Route::post('/delete', 'delete')->name('delete');
             Route::post('/reset-password', 'resetPassword')->name('reset-password');
+            Route::post('/change-password', 'changePassword')->name('change.password');
         });
 
     Route::controller('SaranaController')

@@ -451,7 +451,7 @@ $("body").on("click", ".btn-change-password", function(e) {
     let data = new FormData(form);
     $.ajax({
         type: "POST",
-        url: "/user/change-password",
+        url: "/siswa/change-password",
         data: data,
         processData: false,
         contentType: false,
