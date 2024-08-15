@@ -40,7 +40,7 @@
                     <div class="form-group mb-0 mb-15 with-validation status" id="status-group">
                         <label class="control-label mb-10 " for="status">Status Peminjaman</label>
                         <select name="status" id="status" class="form-control">
-                            {{-- <option value="">Pilih Status</option> --}}
+                            <option value="">Belum Disetujui</option>
                             <option value="1">Disetujui</option>
                             <option value="0">Tidak Disetujui</option>
                         </select>
