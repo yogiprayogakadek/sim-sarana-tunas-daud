@@ -165,18 +165,29 @@
                                             </a>
                                         </td>
                                         <td>
+                                            @can('admin')
                                             <a href="javascript:void(0)" class="btn-status"
                                             data-id="{{ $peminjaman->id }}" data-status="{{$peminjaman->is_approve}}" title="Klik dua kali untuk mengubah status">
                                             {{ $peminjaman->is_approve === 0 ? 'Tidak Disetujui' : ($peminjaman->is_approve === 1 ? 'Disetujui' : 'Belum Disetujui') }}
                                             </a>
+                                            @endcan
+
+                                            @can('siswa')
+                                            {{ $peminjaman->is_approve === 0 ? 'Tidak Disetujui' : ($peminjaman->is_approve === 1 ? 'Disetujui' : 'Belum Disetujui') }}
+                                            @endcan
                                         </td>
                                         <td>
                                             <div class="btn-group">
+                                                @can('siswa')
                                                 <button class="btn btn-default btn-icon-anim btn-square btn-sm btn-edit"
                                                     data-id="{{ $peminjaman->id }}"><i class="fa fa-pencil"></i></button>
+                                                @endcan
+
+                                                @if ($peminjaman->is_approve == '')
                                                 <button
                                                     class="btn btn-danger btn-icon-anim btn-square btn-sm btn-delete"
                                                     data-id="{{ $peminjaman->id }}"><i class="icon-trash"></i></button>
+                                                @endif
                                             </div>
                                         </td>
                                     </tr>

@@ -254,7 +254,7 @@ $(document).ready(function () {
         let form = $("#formUpdate")[0];
         let data = new FormData(form);
         data.append('list_sarana', localStorage.getItem('listSarana'))
-        if(status == null) {
+        if(status == '') {
             if(tanggal == '' || namaPeminjam == '' || keterangan == '' || localStorage.length == 0 || JSON.parse(localStorage.getItem('listSarana'))[0]['data'].length == 0) {
                 Swal.fire('Warning', 'Mohon untuk melengkapi form', 'error');
             } else {

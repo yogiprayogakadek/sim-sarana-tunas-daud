@@ -101,13 +101,13 @@ class PeminjamanController extends Controller
             $data = [
                 'sarana' => json_encode(json_decode($request->list_sarana, true)[0]['data']),
                 'tanggal' => $request->tanggal,
-                'user_id' => $request->nama_peminjam,
+                'user_id' => $request->user_id,
                 'keterangan' => $request->keterangan,
             ];
 
             if ($request->hasFile('foto')) {
                 $fileExtension = $request->file('foto')->getClientOriginalExtension();
-                $fileNameStore = str_replace(' ', '-', $request->nama_peminjam) . '.' . $fileExtension;
+                $fileNameStore = str_replace(' ', '-', $request->user_id) . '.' . $fileExtension;
                 $savePath = 'assets/uploads/peminjaman';
 
                 if (!file_exists(public_path($savePath))) {

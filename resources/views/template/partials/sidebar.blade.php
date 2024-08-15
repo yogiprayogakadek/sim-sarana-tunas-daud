@@ -20,7 +20,6 @@
                 <div class="clearfix"></div>
             </a>
         </li>
-        @endcan
         <li>
             <a href="{{ route('sarana.index') }}" class="{{ Request::is('sarana') ? 'active' : '' }}">
                 <div class="pull-left"><i class="fa fa-dropbox mr-20"></i><span
@@ -29,7 +28,8 @@
                 <div class="clearfix"></div>
             </a>
         </li>
-        @can('admin')
+        @endcan
+
         <li>
             <a href="{{ route('peminjaman.index') }}" class="{{ Request::is('peminjaman') ? 'active' : '' }}">
                 <div class="pull-left"><i class="fa fa-arrow-up mr-20"></i><span
@@ -38,6 +38,8 @@
                 <div class="clearfix"></div>
             </a>
         </li>
+
+        @can('admin')
         <li>
             <a href="{{ route('pengembalian.index') }}" class="{{ Request::is('pengembalian') ? 'active' : '' }}">
                 <div class="pull-left"><i class="fa fa-arrow-down mr-20"></i><span

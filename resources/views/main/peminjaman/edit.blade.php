@@ -28,6 +28,7 @@
                         </div>
                         <div class="form-group mb-0 mb-15 with-validation nama_peminjam" id="nama_peminjam-group">
                             <label class="control-label mb-10 " for="nama_peminjam">Nama Peminjam</label>
+                            <input type="hidden" name="user_id" id="user_id" value="{{$peminjaman->user->id}}">
                             <input type="text" id="nama_peminjam" name="nama_peminjam" class="form-control"
                                 placeholder="nama peminjam" value="{{$peminjaman->user->nama}}" readonly>
                             <div class="help-block with-errors error-message">
