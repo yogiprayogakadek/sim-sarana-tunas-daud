@@ -7,6 +7,7 @@ use App\Models\Peminjaman;
 use App\Models\Sarana;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PeminjamanController extends Controller
 {
@@ -17,7 +18,11 @@ class PeminjamanController extends Controller
 
     public function render()
     {
-        $peminjaman = Peminjaman::all();
+        if(Auth::user()->role == 'Admin') {
+            $peminjaman = Peminjaman::all();
+        } else {
+            $peminjaman = Peminjaman::where('user_id', Auth::user()->id)->get();
+        }
         $view = [
             'data' => view('main.peminjaman.render', compact('peminjaman'))->render()
         ];
@@ -245,9 +250,22 @@ class PeminjamanController extends Controller
         $startTime = $request->input('tanggal_awal');
         $endTime = $request->input('tanggal_akhir');
         if ( $kategori== 'Semua') {
-            $peminjaman = Peminjaman::all();
+            if(Auth::user()->role == 'Admin') {
+                $peminjaman = Peminjaman::all();
+            } else {
+                $peminjaman = Peminjaman::where('user_id', Auth::user()->id)->get();
+            }
+            // $peminjaman = Peminjaman::all();
         } else {
-            $peminjaman = Peminjaman::with('user')->whereBetween('tanggal', [$startTime, $endTime])->get();
+            if(Auth::user()->role == 'Admin') {
+                // $peminjaman = Peminjaman::all();
+                $peminjaman = Peminjaman::with('user')->whereBetween('tanggal', [$startTime, $endTime])->get();
+            } else {
+                $peminjaman = Peminjaman::with('user')->whereBetween('tanggal', [$startTime, $endTime])
+                ->where('user_id', Auth::user()->id)->get();
+                // $peminjaman = Peminjaman::where('user_id', Auth::user()->id)->get();
+            }
+            // $peminjaman = Peminjaman::with('user')->whereBetween('tanggal', [$startTime, $endTime])->get();
         }
 
         $view = [
