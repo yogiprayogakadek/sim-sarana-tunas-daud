@@ -52,7 +52,7 @@
 
                     <!-- Subtitle -->
                     <p class="text-secondary">
-                        Masukkan nama pengguna and kata sandi untuk login
+                        Masukkan nama pengguna dan kata sandi untuk login
                     </p>
 
                     <!-- Form -->
@@ -64,12 +64,12 @@
 
                                     <!-- Label -->
                                     <label class="form-label">
-                                        Nama Pengguna
+                                        Nama Pengguna / NIS
                                     </label>
 
                                     <!-- Input -->
                                     <input type="text" class="form-control @error('username') is-invalid @enderror"
-                                        placeholder="masukkan nama pengguna" name="username" id="username"
+                                        placeholder="masukkan nama pengguna / nis" name="username" id="username"
                                         value="{{ old('username') }}">
                                     @error('username')
                                         <span class="invalid-feedback" role="alert">

@@ -244,7 +244,7 @@
                         tr_list += '<td>'+value.namaSarana+'</td>';
                         tr_list += '<td>'+value.jumlah+'</td>';
                         tr_list += '<td>'+value.kepemilikan+'</td>';
-                        tr_list += '<td><a href='+assets(data.bukti_peminjaman)+'>Lihat</a></td>';
+                        tr_list += '<td><a href='+assets(data.bukti_peminjaman)+' target="_blank">Lihat</a></td>';
                         tr_list += '</tr>';
 
                     $('#tableDetail tbody').append(tr_list);

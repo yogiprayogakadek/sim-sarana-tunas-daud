@@ -63,7 +63,7 @@
 
                                     <!-- Label -->
                                     <label class="form-label">
-                                        Nama Lengkap
+                                        Nama Pengguna
                                     </label>
 
                                     <!-- Input -->
@@ -83,12 +83,12 @@
 
                                     <!-- Label -->
                                     <label class="form-label">
-                                        NIS <span class="text-muted small">(digunakan untuk login)</span>
+                                        Nomor Induk Siswa<span class="text-muted small"><i> (digunakan untuk login)</i></span>
                                     </label>
 
                                     <!-- Input -->
                                     <input type="text" class="form-control @error('username') is-invalid @enderror"
-                                        placeholder="masukkan nama pengguna" name="username" id="username"
+                                        placeholder="masukkan nomor induk siswa" name="username" id="username"
                                         value="{{ old('username') }}">
                                     @error('username')
                                         <span class="invalid-feedback" role="alert">
