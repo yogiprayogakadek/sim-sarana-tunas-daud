@@ -55,3 +55,25 @@ function countData($model)
     $jumlah = $model::count();
     return $jumlah;
 }
+
+function diffDate($start, $end)
+{
+    $start = new DateTime($start);
+    $end = new DateTime($end);
+    $diff = $start->diff($end);
+    return $diff->days;
+}
+
+function selisihHari($tanggal1, $tanggal2) {
+    $date1 = new DateTime($tanggal1);
+    $date2 = new DateTime($tanggal2);
+
+    $selisih = $date1->diff($date2);
+
+    // Jika tanggal1 lebih awal dari tanggal2, hasilnya negatif
+    if ($date1 < $date2) {
+        return -$selisih->days;
+    } else {
+        return $selisih->days;
+    }
+}

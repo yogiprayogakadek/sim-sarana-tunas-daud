@@ -8,6 +8,7 @@ use App\Models\Peminjaman;
 use App\Models\Pengembalian;
 use App\Models\Sarana;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PengembalianController extends Controller
 {
@@ -18,7 +19,11 @@ class PengembalianController extends Controller
 
     public function render()
     {
-        $peminjaman = Peminjaman::all();
+        if(Auth::user()->role == 'Admin') {
+            $peminjaman = Peminjaman::all();
+        } else {
+            $peminjaman = Peminjaman::where('user_id', Auth::user()->id)->where('is_approve', true)->get();
+        }
         $view = [
             'data' => view('main.pengembalian.render', compact('peminjaman'))->render()
         ];

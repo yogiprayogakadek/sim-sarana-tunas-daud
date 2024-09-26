@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('peminjaman', function (Blueprint $table) {
             $table->string('id', 50)->primary();
             $table->date('tanggal');
+            $table->date('tanggal_pengembalian');
             $table->text('keterangan');
             $table->string('user_id', 50);
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

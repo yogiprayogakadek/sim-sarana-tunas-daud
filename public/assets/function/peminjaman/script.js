@@ -124,6 +124,7 @@ $(document).ready(function () {
         // END LOCALSTORAGE
 
         let tanggal = $('input[name=tanggal]').val();
+        let pengembalian = $('input[name=pengembalian]').val();
         let namaPeminjam = $('input[name=nama_peminjam]').val();
         let keterangan = $('#keterangan').val();
         let foto = $('#foto').val();
@@ -131,7 +132,7 @@ $(document).ready(function () {
         let form = $("#formAdd")[0];
         let data = new FormData(form);
         data.append('list_sarana', localStorage.getItem('listSarana'))
-        if(tanggal == '' || foto == '' || namaPeminjam == '' || keterangan == '' || localStorage.length == 0 || JSON.parse(localStorage.getItem('listSarana'))[0]['data'].length == 0) {
+        if(tanggal == '' || pengembalian == '' || foto == '' || namaPeminjam == '' || keterangan == '' || localStorage.length == 0 || JSON.parse(localStorage.getItem('listSarana'))[0]['data'].length == 0) {
             Swal.fire('Warning', 'Mohon untuk melengkapi form', 'error');
         } else {
             $.ajax({
@@ -247,6 +248,7 @@ $(document).ready(function () {
         // END LOCALSTORAGE
 
         let tanggal = $('input[name=tanggal]').val();
+        let pengembalian = $('input[name=pengembalian]').val();
         let namaPeminjam = $('input[name=nama_peminjam]').val();
         let keterangan = $('#keterangan').val();
         let status = $(this).data('status');
@@ -255,7 +257,7 @@ $(document).ready(function () {
         let data = new FormData(form);
         data.append('list_sarana', localStorage.getItem('listSarana'))
         if(status == '') {
-            if(tanggal == '' || namaPeminjam == '' || keterangan == '' || localStorage.length == 0 || JSON.parse(localStorage.getItem('listSarana'))[0]['data'].length == 0) {
+            if(tanggal == '' || pengembalian == '' || namaPeminjam == '' || keterangan == '' || localStorage.length == 0 || JSON.parse(localStorage.getItem('listSarana'))[0]['data'].length == 0) {
                 Swal.fire('Warning', 'Mohon untuk melengkapi form', 'error');
             } else {
                 $.ajax({

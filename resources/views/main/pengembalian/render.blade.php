@@ -7,27 +7,29 @@
             </div>
             <form id="formValidasi">
                 <div class="modal-body">
-                    <div class="form-group mb-0 mb-15 with-validation tanggal" id="tanggal-group">
+                    <div class="form-group mb-0 mb-15 with-validation tanggal will-hide" id="tanggal-group">
                         <label class="control-label mb-10 " for="tanggal">Tanggal Pengembalian</label>
                         <input type="date" id="tanggal" name="tanggal" class="form-control"
-                            placeholder="tanggal pengembalian">
+                            placeholder="tanggal pengembalian"
+                            value="{{ auth()->user()->role == 'Siswa' ? date('Y-m-d') : '' }}"
+                            {{ auth()->user()->role == 'Siswa' ? 'readonly' : '' }}>
                         <div class="help-block with-errors error-message">
                             <ul class="list-unstyled">
                                 <li class="error-tanggal"></li>
                             </ul>
                         </div>
                     </div>
-                    <div class="form-group mb-0 mb-15 with-validation keterangan" id="keterangan-group">
+                    <div class="form-group mb-0 mb-15 with-validation keterangan will-hide" id="keterangan-group">
                         <label class="control-label mb-10 " for="keterangan">Keterangan Pengembalian</label>
-                        <textarea id="keterangan" name="keterangan" class="form-control"
-                            placeholder="keterangan"></textarea>
+                        <textarea id="keterangan" name="keterangan" class="form-control" placeholder="keterangan"
+                            {{ auth()->user()->role == 'Siswa' ? 'readonly' : '' }}></textarea>
                         <div class="help-block with-errors error-message">
                             <ul class="list-unstyled">
                                 <li class="error-keterangan"></li>
                             </ul>
                         </div>
                     </div>
-                    <div class="form-group mb-0 mb-15">
+                    <div class="form-group mb-0 mb-15 will-hide">
                         <input type="hidden" name="peminjaman_id" id="peminjaman_id" class="form-control">
                         {{-- <label class="control-label mb-10">Status Pengembalian</label>
                         <select name="status" id="status" class="form-control status">
@@ -50,7 +52,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-dismiss="modal">Batal</button>
-                    <button type="button" class="btn btn-success btn-validasi">Simpan</button>
+                    <button type="button" class="btn btn-success btn-validasi will-hide">Simpan</button>
                 </div>
             </form>
         </div>
@@ -139,18 +141,27 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Tanggal Peminjaman</th>
+                                    <th>Tanggal Pengembalian</th>
+                                    <th>Lama Peminjaman</th>
                                     <th>Nama Peminjam</th>
                                     <th>Keterangan</th>
                                     {{-- <th>Sarana</th> --}}
                                     <th>Status</th>
+                                    <th>Info</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($peminjaman as $peminjaman)
+                                    @php
+                                        $currentDate = date('Y-m-d');
+                                    @endphp
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $peminjaman->tanggal }}</td>
+                                        <td>{{ $peminjaman->tanggal_pengembalian }}</td>
+                                        <td>{{ diffDate($peminjaman->tanggal_pengembalian, $peminjaman->tanggal) }} hari
+                                        </td>
                                         <td>{{ $peminjaman->user->nama }}</td>
                                         <td>{{ $peminjaman->keterangan }}</td>
                                         {{-- <td>
@@ -158,13 +169,31 @@
                                                 Lihat
                                             </a>
                                         </td> --}}
+                                        <th class="text-center">
+                                            <span>{{ $peminjaman->pengembalian->status ?? 'Belum Dikembalikan' }}</span>
+                                            @if ($currentDate > $peminjaman->tanggal_pengembalian)
+                                                <span class="badge badge-danger">Terkena denda</span>
+                                            @endif
+                                        </th>
                                         <th>
-                                            <span>{{$peminjaman->pengembalian->status ?? 'Belum Dikembalikan'}}</span>
+                                            @if ($currentDate > $peminjaman->tanggal_pengembalian)
+                                                <p>Tanggal pengembalian sudah lewat
+                                                    {{ diffDate($currentDate, $peminjaman->tanggal_pengembalian) }}
+                                                    hari, mohon dikembalikan untuk menghindari denda
+                                                </p>
+                                            @else
+                                                -
+                                            @endif
                                         </th>
                                         <td>
                                             <div class="btn-group">
-                                                <button class="btn btn-success btn-icon-anim btn-square btn-sm detail-peminjaman"
-                                                    data-id="{{ $peminjaman->id }}"><i class="fa fa-eye"></i></button>
+                                                <button
+                                                    class="btn btn-success btn-icon-anim btn-square btn-sm detail-peminjaman"
+                                                    data-id="{{ $peminjaman->id }}"
+                                                    data-current="{{ $currentDate }}"
+                                                    data-pengembalian="{{ $peminjaman->tanggal_pengembalian }}"
+                                                    data-approve="{{ $peminjaman->is_approve }}"><i
+                                                        class="fa fa-eye"></i></button>
                                             </div>
                                         </td>
                                     </tr>
@@ -201,7 +230,9 @@
                 [5, 10, 15, 20, -1],
                 [5, 10, 15, 20, "Semua"]
             ],
-            order: [[0, 'desc']],
+            order: [
+                [0, 'desc']
+            ],
             "rowCallback": function(row, data, index) {
                 // Set the row number as the first cell in each row
                 $('td:eq(0)', row).html(index + 1);
@@ -211,18 +242,38 @@
         $('.detail-peminjaman').click(function() {
             $('#modal').modal('show')
             var id = $(this).data('id');
+            var currentDate = $(this).data('current');
+            var tanggalPengembalian = $(this).data('pengembalian');
+            var days = new Date(Date.parse(tanggalPengembalian) - Date.parse(currentDate)) / 86400000
+            var approve = $(this).data('approve');
             $('#tableDetail tbody').empty();
             $('#peminjaman_id').val(id);
-            $.get("/pengembalian/detailPeminjaman/"+id, function (data) {
-                $('#keterangan').val(data.keterangan);
-                $('#tanggal').val(data.tanggal);
-                $.each(data.sarana, function (index, value) {
+            $.get("/pengembalian/detailPeminjaman/" + id, function(data) {
+                if (data.tanggal != '') {
+                    $('#keterangan').val(data.keterangan);
+                    $('#tanggal').val(data.tanggal);
+                } else {
+                    if (currentDate > tanggalPengembalian) {
+                        $('#keterangan').text('Tanggal pengembalian sudah lewat ' + days +
+                            ' hari, mohon dikembalikan untuk menghindari denda')
+                    } else {
+                        $('#keterangan').text('-');
+                    }
+                }
+
+                if (approve != '') {
+                    $('.will-hide').removeClass('hidden')
+                } else {
+                    $('.will-hide').addClass('hidden')
+                }
+
+                $.each(data.sarana, function(index, value) {
                     let tr_list = '<tr>';
-                        tr_list += '<td>'+(index+1)+'</td>';
-                        tr_list += '<td>'+value.namaSarana+'</td>';
-                        tr_list += '<td>'+value.jumlah+'</td>';
-                        tr_list += '<td>'+value.kepemilikan+'</td>';
-                        tr_list += '</tr>';
+                    tr_list += '<td>' + (index + 1) + '</td>';
+                    tr_list += '<td>' + value.namaSarana + '</td>';
+                    tr_list += '<td>' + value.jumlah + '</td>';
+                    tr_list += '<td>' + value.kepemilikan + '</td>';
+                    tr_list += '</tr>';
 
                     $('#tableDetail tbody').append(tr_list);
                 });

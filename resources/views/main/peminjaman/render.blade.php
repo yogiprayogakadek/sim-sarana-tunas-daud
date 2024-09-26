@@ -27,8 +27,9 @@
 </div>
 {{-- END MODAL --}}
 
-{{-- Modal STatus--}}
-<div class="modal fade" id="modalStatus" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+{{-- Modal STatus --}}
+<div class="modal fade" id="modalStatus" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
+    aria-hidden="true">
     <div class="modal-dialog modal-md" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -129,9 +130,9 @@
             </div>
             <div class="pull-right">
                 @can('siswa')
-                <button class="btn btn-primary btn-rounded btn-lable-wrap left-label btn-tambah"> <span
-                        class="btn-label"><i class="fa fa-plus white-icon"></i> </span><span class="btn-text">Tambah
-                        Data</span></button>
+                    <button class="btn btn-primary btn-rounded btn-lable-wrap left-label btn-tambah"> <span
+                            class="btn-label"><i class="fa fa-plus white-icon"></i> </span><span class="btn-text">Tambah
+                            Data</span></button>
                 @endcan
             </div>
             <div class="clearfix"></div>
@@ -145,6 +146,8 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Tanggal Peminjaman</th>
+                                    <th>Tanggal Pengembalian</th>
+                                    <th>Lama Peminjaman</th>
                                     <th>Nama Peminjam</th>
                                     <th>Keterangan</th>
                                     <th>Sarana</th>
@@ -157,36 +160,49 @@
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $peminjaman->tanggal }}</td>
+                                        <td>{{ $peminjaman->tanggal_pengembalian }}</td>
+                                        <td>{{ diffDate($peminjaman->tanggal, $peminjaman->tanggal_pengembalian) }}</td>
                                         <td>{{ $peminjaman->user->nama }}</td>
                                         <td>{{ $peminjaman->keterangan }}</td>
                                         <td>
-                                            <a href="javascript:void(0)" class="detail-peminjaman" data-id="{{$peminjaman->id}}">
+                                            <a href="javascript:void(0)" class="detail-peminjaman"
+                                                data-id="{{ $peminjaman->id }}">
                                                 Lihat
                                             </a>
                                         </td>
                                         <td>
                                             @can('admin')
-                                            <a href="javascript:void(0)" class="btn-status"
-                                            data-id="{{ $peminjaman->id }}" data-status="{{$peminjaman->is_approve}}" title="Klik dua kali untuk mengubah status">
-                                            {{ $peminjaman->is_approve === 0 ? 'Tidak Disetujui' : ($peminjaman->is_approve === 1 ? 'Disetujui' : 'Belum Disetujui') }}
-                                            </a>
+                                                <a href="javascript:void(0)" class="btn-status"
+                                                    data-id="{{ $peminjaman->id }}"
+                                                    data-status="{{ $peminjaman->is_approve }}"
+                                                    title="Klik dua kali untuk mengubah status">
+                                                    {{ $peminjaman->is_approve === 0 ? 'Tidak Disetujui' : ($peminjaman->is_approve === 1 ? 'Disetujui' : 'Belum Disetujui') }}
+                                                </a>
                                             @endcan
 
                                             @can('siswa')
-                                            {{ $peminjaman->is_approve === 0 ? 'Tidak Disetujui' : ($peminjaman->is_approve === 1 ? 'Disetujui' : 'Belum Disetujui') }}
+                                                {{ $peminjaman->is_approve === 0 ? 'Tidak Disetujui' : ($peminjaman->is_approve === 1 ? 'Disetujui' : 'Belum Disetujui') }}
                                             @endcan
                                         </td>
                                         <td>
                                             <div class="btn-group">
                                                 @can('siswa')
-                                                <button class="btn btn-default btn-icon-anim btn-square btn-sm btn-edit"
-                                                    data-id="{{ $peminjaman->id }}"><i class="fa fa-pencil"></i></button>
+                                                    <button
+                                                        class="btn btn-default btn-icon-anim btn-square btn-sm btn-edit"
+                                                        data-id="{{ $peminjaman->id }}"><i
+                                                            class="fa fa-pencil"></i></button>
                                                 @endcan
 
                                                 @if ($peminjaman->is_approve == '')
-                                                <button
-                                                    class="btn btn-danger btn-icon-anim btn-square btn-sm btn-delete"
-                                                    data-id="{{ $peminjaman->id }}"><i class="icon-trash"></i></button>
+                                                    <button
+                                                        class="btn btn-danger btn-icon-anim btn-square btn-sm btn-delete"
+                                                        data-id="{{ $peminjaman->id }}"><i
+                                                            class="icon-trash"></i></button>
+                                                    {{-- @elseif ($peminjaman->is_approve == true)
+                                                    <button
+                                                        class="btn btn-success btn-icon-anim btn-square btn-sm btn-pengembalian"
+                                                        data-id="{{ $peminjaman->id }}"><i
+                                                            class="fa fa-arrow-left"></i></button> --}}
                                                 @endif
                                             </div>
                                         </td>
@@ -225,7 +241,9 @@
                 [5, 10, 15, 20, -1],
                 [5, 10, 15, 20, "Semua"]
             ],
-            order: [[0, 'desc']],
+            order: [
+                [0, 'desc']
+            ],
             "rowCallback": function(row, data, index) {
                 // Set the row number as the first cell in each row
                 $('td:eq(0)', row).html(index + 1);
@@ -237,15 +255,16 @@
             var id = $(this).data('id');
 
             $('#tableDetail tbody').empty();
-            $.get("/peminjaman/detail/"+id, function (data) {
-                $.each(data.sarana, function (index, value) {
+            $.get("/peminjaman/detail/" + id, function(data) {
+                $.each(data.sarana, function(index, value) {
                     let tr_list = '<tr>';
-                        tr_list += '<td>'+(index+1)+'</td>';
-                        tr_list += '<td>'+value.namaSarana+'</td>';
-                        tr_list += '<td>'+value.jumlah+'</td>';
-                        tr_list += '<td>'+value.kepemilikan+'</td>';
-                        tr_list += '<td><a href='+assets(data.bukti_peminjaman)+' target="_blank">Lihat</a></td>';
-                        tr_list += '</tr>';
+                    tr_list += '<td>' + (index + 1) + '</td>';
+                    tr_list += '<td>' + value.namaSarana + '</td>';
+                    tr_list += '<td>' + value.jumlah + '</td>';
+                    tr_list += '<td>' + value.kepemilikan + '</td>';
+                    tr_list += '<td><a href=' + assets(data.bukti_peminjaman) +
+                        ' target="_blank">Lihat</a></td>';
+                    tr_list += '</tr>';
 
                     $('#tableDetail tbody').append(tr_list);
                 });

@@ -44,9 +44,11 @@ class PeminjamanController extends Controller
     public function store(Request $request)
     {
         try {
+            // dd($request->all());
             $data = [
                 'sarana' => json_encode(json_decode($request->list_sarana, true)[0]['data']),
                 'tanggal' => $request->tanggal,
+                'tanggal_pengembalian' => $request->pengembalian,
                 'user_id' => $request->nama_peminjaman,
                 'keterangan' => $request->keterangan,
             ];
@@ -106,6 +108,7 @@ class PeminjamanController extends Controller
             $data = [
                 'sarana' => json_encode(json_decode($request->list_sarana, true)[0]['data']),
                 'tanggal' => $request->tanggal,
+                'tanggal_pengembalian' => $request->pengembalian,
                 'user_id' => $request->user_id,
                 'keterangan' => $request->keterangan,
             ];

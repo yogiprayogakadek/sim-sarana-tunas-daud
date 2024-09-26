@@ -121,7 +121,8 @@
                                         <td>{{ $kerusakan->tanggal }}</td>
                                         {{-- <td>{{ $kerusakan->keterangan }}</td> --}}
                                         <td>
-                                            <a href="javascript:void(0)" class="detail-kerusakan" data-id="{{$kerusakan->id}}">
+                                            <a href="javascript:void(0)" class="detail-kerusakan"
+                                                data-id="{{ $kerusakan->id }}">
                                                 Lihat
                                             </a>
                                         </td>
@@ -168,7 +169,9 @@
                 [5, 10, 15, 20, -1],
                 [5, 10, 15, 20, "Semua"]
             ],
-            order: [[0, 'desc']],
+            order: [
+                [0, 'desc']
+            ],
             "rowCallback": function(row, data, index) {
                 // Set the row number as the first cell in each row
                 $('td:eq(0)', row).html(index + 1);
@@ -180,15 +183,15 @@
             var id = $(this).data('id');
 
             $('#tableDetail tbody').empty();
-            $.get("/kerusakan/detail/"+id, function (data) {
-                $.each(data, function (index, value) {
+            $.get("/kerusakan/detail/" + id, function(data) {
+                $.each(data, function(index, value) {
                     let tr_list = '<tr>';
-                        tr_list += '<td>'+(index+1)+'</td>';
-                        tr_list += '<td>'+value.namaSarana+'</td>';
-                        tr_list += '<td>'+value.jumlah+'</td>';
-                        tr_list += '<td>'+value.kepemilikan+'</td>';
-                        tr_list += '<td>'+value.keterangan+'</td>';
-                        tr_list += '</tr>';
+                    tr_list += '<td>' + (index + 1) + '</td>';
+                    tr_list += '<td>' + value.namaSarana + '</td>';
+                    tr_list += '<td>' + value.jumlah + '</td>';
+                    tr_list += '<td>' + value.kepemilikan + '</td>';
+                    tr_list += '<td>' + value.keterangan + '</td>';
+                    tr_list += '</tr>';
 
                     $('#tableDetail tbody').append(tr_list);
                 });

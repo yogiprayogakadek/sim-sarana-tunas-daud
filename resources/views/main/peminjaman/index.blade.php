@@ -20,7 +20,7 @@
     <script src="{{ asset('assets/function/peminjaman/script.js') }}"></script>
     <script>
         function assets(url) {
-            var url = '{{ url("") }}/' + url;
+            var url = '{{ url('') }}/' + url;
             return url;
         }
         @if (session('status'))
