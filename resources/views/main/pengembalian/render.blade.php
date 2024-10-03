@@ -182,7 +182,9 @@
                                                 <p>Tanggal pengembalian sudah lewat
                                                     {{ diffDate($peminjaman->pengembalian->tanggal, $peminjaman->tanggal_pengembalian) }}
                                                     {{-- {{ diffDate($currentDate, $peminjaman->tanggal_pengembalian) }} --}}
-                                                    hari, mohon dikembalikan untuk menghindari denda
+                                                    hari (dikembalikan tanggal
+                                                    {{ $peminjaman->pengembalian->tanggal }}), mohon dikembalikan untuk
+                                                    menghindari denda
                                                 </p>
                                             @else
                                                 -
