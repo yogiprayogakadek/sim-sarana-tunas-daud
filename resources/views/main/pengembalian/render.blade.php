@@ -171,13 +171,15 @@
                                         </td> --}}
                                         <th class="text-center">
                                             <span>{{ $peminjaman->pengembalian->status ?? 'Belum Dikembalikan' }}</span>
-                                            @if ($peminjaman->pengembalian->tanggal > $peminjaman->tanggal_pengembalian)
+                                            {{-- @if ($peminjaman->pengembalian->tanggal > $peminjaman->tanggal_pengembalian) --}}
+                                            @if (isset($peminjaman->pengembalian) && $peminjaman->pengembalian->tanggal > $peminjaman->tanggal_pengembalian)
                                                 {{-- @if ($currentDate > $peminjaman->tanggal_pengembalian) --}}
                                                 <span class="badge badge-danger">Terkena denda</span>
                                             @endif
                                         </th>
                                         <th>
-                                            @if ($peminjaman->pengembalian->tanggal > $peminjaman->tanggal_pengembalian)
+                                            {{-- @if ($peminjaman->pengembalian->tanggal > $peminjaman->tanggal_pengembalian) --}}
+                                            @if (isset($peminjaman->pengembalian) && $peminjaman->pengembalian->tanggal > $peminjaman->tanggal_pengembalian)
                                                 {{-- @if ($currentDate > $peminjaman->tanggal_pengembalian) --}}
                                                 <p>Tanggal pengembalian sudah lewat
                                                     {{ diffDate($peminjaman->pengembalian->tanggal, $peminjaman->tanggal_pengembalian) }}
